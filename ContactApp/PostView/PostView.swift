@@ -6,10 +6,18 @@
 //
 
 import SwiftUI
-
+import SwiftData
 struct PostView: View {
+    @Query(sort: \PostModel.id) var posts:[PostModel]
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack {
+            List(posts) { post in
+                Text(post.title)
+            }
+            .navigationTitle("Posts: \(posts.count)")
+            .navigationBarTitleDisplayMode(.large)
+        }
     }
 }
 

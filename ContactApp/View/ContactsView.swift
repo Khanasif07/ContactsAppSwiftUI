@@ -6,30 +6,49 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContactsView: View {
+    @Environment(\.modelContext) private var context // ← For CRUD operations
+    @StateObject private var viewModel: ContactViewModel
     @State private var searchText: String = ""
     @State private var showAddContactView: Bool = false
-    
-    @State private var contacts:[Contact] = [Contact(id: "1", firstName: "Asif", lastName: "Khan", email: "asif@yopmail.com"),Contact(id: "2", firstName: "karan", lastName: "Kumar", email: "karan@yopmail.com"),Contact(id: "3", firstName: "abhik", lastName: "jawandhiya", email: "abhik@yopmail.com")]
-    
+    var searchResults: [Contact] {
+        return viewModel.searchResults(for: searchText)
+    }
+    init(context: ModelContext) {
+        _viewModel = StateObject(wrappedValue: ContactViewModel(context: context))
+    }
+   
     var body: some View {
         NavigationStack{
             List {
-                ForEach(contacts){
+                ForEach(searchResults){
                     contact in
                     NavigationLink(value: contact) {
                         ContactRowView(contact: contact)
+//                            .swipeActions {
+//                                Button(action: {
+////                                    viewModel.deleteContact(contact)
+//                                    
+//                                }) {
+//                                    Label("Delete", systemImage: "trash")
+//                                }.tint(.red)
+//                            }
                     }
                 }
+                .onDelete(perform: deleteTasks)
             }
             .sheet(isPresented: $showAddContactView, onDismiss: {
                 //
             }, content: {
-                AddContactView().presentationDetents([.height(300)])
+                AddContactView()
+                    .environmentObject(viewModel)
+                    .presentationDetents([.height(300)])
             })
             .navigationDestination(for: Contact.self, destination: { contact in
                 EditContactView(contact: contact)
+                    .environmentObject(viewModel)
             })
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -45,6 +64,15 @@ struct ContactsView: View {
     }
 }
 
-#Preview {
-    ContactsView()
+extension ContactsView {
+    func deleteTasks(at offsets: IndexSet) {
+        for index in offsets {
+            let task = viewModel.contacts[index] // You can access the model like this
+            context.delete(task)
+        }
+    }
 }
+//
+//#Preview {
+//    ContactsView()
+//}

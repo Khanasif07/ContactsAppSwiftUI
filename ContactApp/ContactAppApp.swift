@@ -10,23 +10,32 @@ import SwiftData
 
 @main
 struct ContactAppApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
+    //let postLoader = PostLoader()
+    let container: ModelContainer = {
+        let schema = Schema([Expense.self,Contact.self,PostModel.self])
+        let configuration = ModelConfiguration()
+        let container = try! ModelContainer(for: schema, configurations: [])
+        return container
     }()
-
+    
+    
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            //ContactsView(context: ModelContext(try! ModelContainer(for: Contact.self)))
+            ExpenseView()
+//            PostView()
+//                .task {
+//                    do {
+//                        let dataImporter = DataImporter(context: container.mainContext,postLoader: postLoader)
+//                        try await dataImporter.importData()
+//                    }catch {
+//                        print(error)
+//                    }
+//                    
+//                }
         }
-        .modelContainer(sharedModelContainer)
+        .modelContainer(container)
+        //.modelContainer(for: [Expense.self,Contact.self]) // needed to inject context for SwiftData
     }
 }

@@ -11,7 +11,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		E0B11A772D9D48E600A1D0D4 /* ContactApp */ = {
+		E07806DA2D9E825C006DA4BB /* ContactApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = ContactApp;
 			sourceTree = "<group>";
@@ -32,7 +32,7 @@
 		E0B11A6C2D9D48E600A1D0D4 = {
 			isa = PBXGroup;
 			children = (
-				E0B11A772D9D48E600A1D0D4 /* ContactApp */,
+				E07806DA2D9E825C006DA4BB /* ContactApp */,
 				E0B11A762D9D48E600A1D0D4 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -61,7 +61,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				E0B11A772D9D48E600A1D0D4 /* ContactApp */,
+				E07806DA2D9E825C006DA4BB /* ContactApp */,
 			);
 			name = ContactApp;
 			packageProductDependencies = (

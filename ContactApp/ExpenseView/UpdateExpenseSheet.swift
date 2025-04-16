@@ -8,11 +8,32 @@
 import SwiftUI
 
 struct UpdateExpenseSheet: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+    @Environment(\.modelContext)  var context
+    @Environment(\.dismiss) private var dismiss
+    
+    @Bindable var expense: Expense
+   
+    var body: some View{
+        NavigationStack{
+            Form{
+                TextField("Expense Name", text: $expense.name)
+                DatePicker("Date", selection: $expense.date,displayedComponents: .date)
+                TextField("Value", value: $expense.value,format: .currency(code: "USD"))
+                    .keyboardType(.decimalPad)
+                
+            }.navigationTitle("Update Expense")
+                .navigationBarTitleDisplayMode(.large)
+                .toolbar {
+                    ToolbarItemGroup(placement: .topBarTrailing, content: {
+                        Button("Done") {
+                            dismiss()
+                        }
+                    })
+                }
+        }
     }
 }
 
-#Preview {
-    UpdateExpenseSheet()
-}
+//#Preview {
+//    UpdateExpenseSheet(expense: <#Expense#>)
+//}
